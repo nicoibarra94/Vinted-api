@@ -1,0 +1,21 @@
+const express = require("express");
+const formidable = require("express-formidable");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv").config();
+
+const app = express();
+app.use(formidable());
+
+// const User = require("../Vinted/models/User");
+// const Offer = require("../Vinted/models/Offer");
+const UserRoutes = require("../Vinted/routes/UserRoutes");
+const OfferRoutes = require("../Vinted/routes/OfferRoutes");
+
+app.use(UserRoutes);
+app.use(OfferRoutes);
+
+mongoose.connect(process.env.MONGODB_URI);
+
+app.listen(process.env.PORT, () => {
+  console.log("Server has started");
+});
