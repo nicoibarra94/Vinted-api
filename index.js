@@ -2,9 +2,11 @@ const express = require("express");
 const formidable = require("express-formidable");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 
 const app = express();
 app.use(formidable());
+app.use(cors());
 
 // const User = require("../Vinted/models/User");
 // const Offer = require("../Vinted/models/Offer");
