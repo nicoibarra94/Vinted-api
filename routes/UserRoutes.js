@@ -11,9 +11,9 @@ const encBase64 = require("crypto-js/enc-base64");
 const uid2 = require("uid2");
 
 cloudinary.config({
-  cloud_name: "dtzfzb7ju",
-  api_key: "881765573571266",
-  api_secret: "np_r6u7EHuvSAMDPn-e0f2M0lE4",
+  cloud_name: process.env.CLOUDINARY_CONFIG_NAME,
+  api_key: process.env.CLOUDINARY_CONFIG_API_KEY,
+  api_secret: process.env.CLOUDINARY_CONFIG_API_SECRET,
 });
 
 router.post("/user/signup", async (req, res) => {
