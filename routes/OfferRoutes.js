@@ -97,6 +97,47 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
 
 router.get("/offers", async (req, res) => {
   try {
+    let filters = {};
+
+    if (req.query.title) {
+      filters.product_name = new RegExp(req.query.title, "i");
+    }
+
+    if (req.query.priceMax) {
+      filters.product_price = { $lte: req.query.priceMax };
+    }
+
+    if (req.query.priceMin) {
+      if (filters.product_price) {
+        filters.product_price.$gte = req.query.priceMin;
+      } else {
+        filters.product_price = { $gte: req.query.priceMin };
+      }
+    }
+
+    let sort = "";
+
+    if (req.query.sort === "price-desc") {
+      sort = { product_price: -1 };
+    } else {
+      sort = { product_price: 1 };
+    }
+
+    let page = 1;
+    let limit = 3;
+
+    if (req.query.page) {
+      page = Number(req.query.page);
+    }
+
+    const offers = await Offer.find(filters)
+      .sort(sort)
+      .limit(limit)
+      .skip((page - 1) * limit);
+
+    let counter = offers.length;
+
+    return res.json({ count: counter, offers: offers });
   } catch (error) {
     res.status(400).json({ Message: error.message });
   }
