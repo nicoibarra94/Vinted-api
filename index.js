@@ -10,8 +10,8 @@ app.use(cors());
 
 // const User = require("../Vinted/models/User");
 // const Offer = require("../Vinted/models/Offer");
-const UserRoutes = require("./routes/UserRoute.js");
 const OfferRoutes = require("./routes/OfferRoutes.js");
+const UserRoutes = require("./routes/UserRoute.js");
 
 app.use(UserRoutes);
 app.use(OfferRoutes);
