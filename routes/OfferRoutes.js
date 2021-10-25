@@ -15,6 +15,12 @@ cloudinary.config({
 router.post("/offer/publish", isAuthenticated, async (req, res) => {
   try {
     if (req.fields.title) {
+      if (req.fields.title[51]) {
+        return res.json({
+          Error:
+            "Please choose a title of your announcement of 50 characters maximum.",
+        });
+      }
     } else {
       return res.json({
         Message: "Please choose a title for your announcement.",
@@ -22,6 +28,11 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
     }
 
     if (req.fields.description) {
+      if (req.fields.description[501]) {
+        return res.json({
+          Error: "Your description should be 500 characters at the maximum.",
+        });
+      }
     } else {
       return res.json({
         Message: "Please add a description for your announcement.",
@@ -29,6 +40,11 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
     }
 
     if (req.fields.price) {
+      if (req.fields.price > 10000) {
+        return res.json({
+          Message: "Your announcement can not have a price higher than 10000e.",
+        });
+      }
     } else {
       return res.json({
         Message: "Please indicate the price of what you sell.",
@@ -95,6 +111,42 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
   }
 });
 
+router.post("/offer/update", isAuthenticated, async (req, res) => {
+  try {
+  } catch (error) {
+    res.status(400).json({ Message: error.message });
+  }
+});
+
+router.post("/offer/delete", isAuthenticated, async (req, res) => {
+  try {
+    if (req.fields.id) {
+      const offerToDelete = await Offer.findById(req.fields.id);
+      offerToDelete.remove();
+      return res.json({ Message: "Your announcement has been deleted." });
+    } else {
+      return res.json({
+        Message: "Please indicate the announcement you want to delete.",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({ Message: error.message });
+  }
+});
+
+router.get("/offer/:id", async (req, res) => {
+  try {
+    if (req.params.id) {
+      const search = await Offer.findById(req.params.id);
+      return res.json(search);
+    } else {
+      return res.json("Please enter a valid ID.");
+    }
+  } catch (error) {
+    res.status(400).json({ Message: error.message });
+  }
+});
+
 router.get("/offers", async (req, res) => {
   try {
     let filters = {};
@@ -138,19 +190,6 @@ router.get("/offers", async (req, res) => {
     let counter = offers.length;
 
     return res.json({ count: counter, offers: offers });
-  } catch (error) {
-    res.status(400).json({ Message: error.message });
-  }
-});
-
-router.get("/offer/:id", async (req, res) => {
-  try {
-    if (req.params.id) {
-      const search = await Offer.findById(req.params.id);
-      return res.json(search);
-    } else {
-      return res.json("Please enter a valid ID.");
-    }
   } catch (error) {
     res.status(400).json({ Message: error.message });
   }
