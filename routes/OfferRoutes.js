@@ -179,7 +179,7 @@ router.get("/offers", async (req, res) => {
     }
 
     let page = 1;
-    let limit = 3;
+    let limit = 20;
 
     if (req.query.page) {
       page = Number(req.query.page);
