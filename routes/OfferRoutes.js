@@ -105,7 +105,7 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
         { EMPLACEMENT: req.fields.city },
         { produc_image: result },
       ],
-      owner: publisher.account,
+      owner: req.user,
     });
     await newOffer.save();
     res.json(newOffer);
