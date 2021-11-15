@@ -137,7 +137,10 @@ router.post("/offer/delete", isAuthenticated, async (req, res) => {
 router.get("/offer/:id", async (req, res) => {
   try {
     if (req.params.id) {
-      const search = await Offer.findById(req.params.id);
+      const search = await Offer.findById(req.params.id).populate({
+        path: "owner",
+        select: "account",
+      });
       return res.json(search);
     } else {
       return res.json("Please enter a valid ID.");
