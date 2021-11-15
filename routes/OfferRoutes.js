@@ -90,6 +90,9 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
     const result = await cloudinary.uploader.upload(pictureToUpload, {
       folder: "/Vinted/Offers",
     });
+
+    const publisher = await User.findById({ _id: req.user });
+
     const newOffer = new Offer({
       product_name: req.fields.title,
       product_description: req.fields.description,
@@ -102,7 +105,7 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
         { EMPLACEMENT: req.fields.city },
         { produc_image: result },
       ],
-      owner: req.user,
+      owner: publisher,
     });
     await newOffer.save();
     res.json(newOffer);
