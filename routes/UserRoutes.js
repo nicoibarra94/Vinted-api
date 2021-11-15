@@ -28,11 +28,6 @@ router.post("/user/signup", async (req, res) => {
       return res.json({ Message: "Please choose a Username." });
     }
 
-    if (req.fields.phone) {
-    } else {
-      return res.json({ Message: "Please indicate your phone number." });
-    }
-
     if (req.fields.password) {
     } else {
       return res.json({ Message: "Please choose a password." });
