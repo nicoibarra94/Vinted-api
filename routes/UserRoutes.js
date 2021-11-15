@@ -42,10 +42,10 @@ router.post("/user/signup", async (req, res) => {
       }
     } catch {}
 
-    let pictureToUpload = req.files.avatar.path;
-    const result = await cloudinary.uploader.upload(pictureToUpload, {
-      folder: "Vinted/usersAvatarPhotos",
-    });
+    // let pictureToUpload = req.files.avatar.path;
+    // const result = await cloudinary.uploader.upload(pictureToUpload, {
+    //   folder: "Vinted/usersAvatarPhotos",
+    // });
 
     const password = req.fields.password;
     const salt = uid2(16);
@@ -56,7 +56,7 @@ router.post("/user/signup", async (req, res) => {
       account: {
         username: req.fields.username,
         phone: req.fields.phone,
-        avatar: result,
+        // avatar: result,
       },
       token: token,
       hash: hash,
