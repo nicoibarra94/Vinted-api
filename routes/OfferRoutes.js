@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv").config();
+const stripe = require("stripe")("sk_test_votreCléPrivée");
 
 const Offer = require("../models/Offer");
 const isAuthenticated = require("../middlewares/isAuthenticated");
@@ -194,6 +195,24 @@ router.get("/offers", async (req, res) => {
     let counter = offers.length;
 
     return res.json({ count: counter, offers: offers });
+  } catch (error) {
+    res.status(400).json({ Message: error.message });
+  }
+});
+
+router.post("/payment", async (req, res) => {
+  try {
+    const stripeToken = req.fields.stripeToken;
+    const amount = req.fields.price;
+    const description = req.fields.name;
+
+    const response = await stripe.charges.create({
+      amount: amount,
+      currency: "eur",
+      description: description,
+      source: stripeToken,
+    });
+    res.json(response);
   } catch (error) {
     res.status(400).json({ Message: error.message });
   }
