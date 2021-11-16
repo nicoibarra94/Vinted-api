@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv").config();
-const stripe = require("stripe")("sk_test_votreCléPrivée");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const Offer = require("../models/Offer");
 const isAuthenticated = require("../middlewares/isAuthenticated");
